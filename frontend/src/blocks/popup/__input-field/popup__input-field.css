@@ -1,0 +1,25 @@
+.popup__input-field {
+    max-width: 358px;
+    width: 100%;
+    height: 27px;
+    padding: 0 0 13px;
+    margin-bottom: 5px;
+
+    border: none;
+    border-bottom: 1px solid rgba(1, 1, 1, .2);
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+
+    color: #000000;
+
+}
+@media (max-width: 767px) {
+    .popup__input-field {
+        max-width: 238px;
+    }
+}
+.popup__input-field:first-of-type {
+    margin-top: 0;
+}

@@ -1,0 +1,27 @@
+.cards-container {
+    display: grid;
+    grid-template-columns: 282px 282px 282px;
+    grid-template-rows: auto;
+    grid-auto-flow: row;
+    row-gap: 20px;
+    column-gap: 17px;
+    box-sizing: border-box;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    justify-self: center;
+    margin: 0;
+    padding: 0;
+}
+@media (max-width: 907px) {
+    .cards-container {
+        grid-template-columns: 282px 282px;
+        padding: 0 27px;
+    }
+}
+@media (max-width: 600px) {
+    .cards-container {
+        grid-template-columns: 282px;
+        padding: 0 19px;
+    }
+}

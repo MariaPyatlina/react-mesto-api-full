@@ -1,0 +1,10 @@
+.card__description-container {
+    width: 100%;
+    min-height: 79px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+}

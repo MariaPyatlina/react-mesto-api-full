@@ -1,0 +1,16 @@
+.page {
+    background-color: #000000;
+
+    font-family: Inter, Arial, sans-serif;
+    font-style: normal;
+    color: #FFFFFF;
+
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+}

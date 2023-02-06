@@ -1,0 +1,10 @@
+.popup__container-picture{
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 0px;
+    box-sizing: content-box;
+
+    padding: 0;
+    position: relative;
+    object-fit: contain;
+    display: flex;
+}
