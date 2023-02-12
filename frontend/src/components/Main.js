@@ -1,5 +1,7 @@
 import React from 'react';
 import Card from './Card';
+import Header from './Header';
+import Footer from './Footer';
 import iconEditButton from '../images/button_icon_edit.svg';
 
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
@@ -11,12 +13,16 @@ function Main({
     onEditAvatar,
     onCardClick,
     onCardLike,
-    onCardDelete
+    onCardDelete,
+    onExit,
+    email,
+    loggedIn,
 }) {
     const currentUser = React.useContext(CurrentUserContext);
 
     return (
-        <CurrentUserContext.Provider value={currentUser}>
+        <>
+            <Header email={email} loggedIn={loggedIn} onExit={onExit} />
             <main className="content">
                 <section className="profile">
                     <div className="profile__container"  >
@@ -66,9 +72,9 @@ function Main({
                         ))}
                     </div>
                 </section>
-
             </main>
-        </CurrentUserContext.Provider>
+            <Footer />
+        </>
     );
 
 }

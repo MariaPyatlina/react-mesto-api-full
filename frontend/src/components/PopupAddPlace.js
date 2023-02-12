@@ -10,11 +10,6 @@ function PopupAddPlace({
     const [linkPlace, setLinkPlace] = React.useState('');
 
     React.useEffect(() => {
-        setTitle(title);
-        setLinkPlace(linkPlace);
-    }, [title, linkPlace]);
-
-    React.useEffect(() => {
         setTitle('');
         setLinkPlace('');
     }, [isOpen]);

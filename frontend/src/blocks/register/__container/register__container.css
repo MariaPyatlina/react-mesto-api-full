@@ -1,0 +1,11 @@
+.register__container{
+    max-width: 358px;
+    width: 100%;
+    min-height: 500px;
+    margin: 60px auto 0px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between ;
+    align-items: flex-start;
+}
