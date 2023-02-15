@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const userRoutes = require('./routes/users');
@@ -7,27 +8,34 @@ const cardRoutes = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const { handlerError } = require('./middlewares/handlerError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { allowedCors } = require('./utils/allowedCors');
 
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 
 const app = express();
-// подключаемся к серверу mongo
 
 app.use(express.json());
 mongoose.set('strictQuery', false);
 
 app.use(requestLogger); // Подключаем логгер запросов до всех роутов
 
-// Маршрутизирует авторизацию
-app.post('/signin', celebrate({
+app.use(cors(allowedCors));
+
+// Раскомментить перед ревью, удалить после
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('Сервер сейчас упадёт');
+//   }, 0);
+// });
+
+app.post('/signin', celebrate({ // Маршрутизирует авторизацию
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
 }), login);
 
-// Маршрутизирует регистрацию
-app.post('/signup', celebrate({
+app.post('/signup', celebrate({ // Маршрутизирует регистрацию
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -38,14 +46,11 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-// Маршрутизирует все запросы про пользователя
-app.use('/users', userRoutes);
+app.use('/users', userRoutes); // Маршрутизирует все запросы про пользователя
 
-// Маршрутизирует все запросы про карточки
-app.use('/cards', cardRoutes);
+app.use('/cards', cardRoutes); // Маршрутизирует все запросы про карточки
 
-// Маршрутизирует все неправильные запросы
-app.use('/*', (req, res) => {
+app.use('/*', (req, res) => {// Маршрутизирует все неправильные запросы
   res.status(404).send({ message: 'Некорректный url' });
 });
 
@@ -54,7 +59,7 @@ app.use(errorLogger); // логгер ошибок
 app.use(errors()); // ошибки celebrate
 app.use(handlerError);
 
-mongoose.connect(MONGO_URL);
+mongoose.connect(MONGO_URL); // подключаемся к серверу mongo
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
