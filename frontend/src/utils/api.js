@@ -1,7 +1,7 @@
 //import { config } from './utils.js'; //авторизация
 
 export const config = {
-  baseUrl: 'http://mesto.for.students.nomoredomainsclub.ru',
+  baseUrl: 'http://mesto.for.students.nomoredomainsclub.ru/api',
   headers: { 'Content-Type': 'application/json' },
 }
 

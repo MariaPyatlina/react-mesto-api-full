@@ -1,7 +1,7 @@
 //const baseAuthUrl = 'https://auth.nomoreparties.co';
 //const baseAuthUrl = 'http://localhost:3000';
 
-const baseUrl = 'http://mesto.for.students.nomoredomainsclub.ru';
+const baseUrl = 'http://mesto.for.students.nomoredomainsclub.ru/api';
 
 
 const parseAnswer = (res) => {
