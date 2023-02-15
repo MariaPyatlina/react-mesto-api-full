@@ -1,4 +1,8 @@
-const baseAuthUrl = 'https://auth.nomoreparties.co';
+//const baseAuthUrl = 'https://auth.nomoreparties.co';
+//const baseAuthUrl = 'http://localhost:3000';
+
+const baseUrl = 'http://mesto.for.students.nomoredomainsclub.ru';
+
 
 const parseAnswer = (res) => {
     if (res.ok) {
@@ -8,7 +12,7 @@ const parseAnswer = (res) => {
 }
 
 export const register = (password, email) => {
-    return fetch(`${baseAuthUrl}/signup`, {
+    return fetch(`${baseUrl}/signup`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -22,7 +26,7 @@ export const register = (password, email) => {
 }
 
 export const authorize = (password, email) => {
-    return fetch(`${baseAuthUrl}/signin`, {
+    return fetch(`${baseUrl}/signin`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -36,7 +40,7 @@ export const authorize = (password, email) => {
 }
 
 export const checkToken = (token) => {
-    return fetch(`${baseAuthUrl}/users/me`, {
+    return fetch(`${baseUrl}/users/me`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",

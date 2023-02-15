@@ -1,4 +1,9 @@
-import { config } from './utils.js'; //авторизация
+//import { config } from './utils.js'; //авторизация
+
+export const config = {
+  baseUrl: 'http://mesto.for.students.nomoredomainsclub.ru',
+  headers: { 'Content-Type': 'application/json' },
+}
 
 class Api {
   constructor(options) {
