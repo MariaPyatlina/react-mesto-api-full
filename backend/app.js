@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-// const cors = require('cors');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const userRoutes = require('./routes/users');
@@ -8,7 +8,7 @@ const cardRoutes = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
 const { handlerError } = require('./middlewares/handlerError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-// const { allowedCors } = require('./utils/allowedCors');
+const { allowedCors } = require('./utils/allowedCors');
 
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
 
@@ -19,7 +19,7 @@ mongoose.set('strictQuery', false);
 
 app.use(requestLogger); // Подключаем логгер запросов до всех роутов
 
-// app.use(cors(allowedCors));
+app.use(cors(allowedCors));
 
 // Раскомментить перед ревью, удалить после
 // app.get('/crash-test', () => {
@@ -28,14 +28,14 @@ app.use(requestLogger); // Подключаем логгер запросов д
 //   }, 0);
 // });
 
-app.post('/signin', celebrate({ // Маршрутизирует авторизацию
+app.post('/api/signin', celebrate({ // Маршрутизирует авторизацию
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
 }), login);
 
-app.post('/signup', celebrate({ // Маршрутизирует регистрацию
+app.post('/api/signup', celebrate({ // Маршрутизирует регистрацию
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -46,9 +46,9 @@ app.post('/signup', celebrate({ // Маршрутизирует регистра
   }),
 }), createUser);
 
-app.use('/users', userRoutes); // Маршрутизирует все запросы про пользователя
+app.use('/api/users', userRoutes); // Маршрутизирует все запросы про пользователя
 
-app.use('/cards', cardRoutes); // Маршрутизирует все запросы про карточки
+app.use('/api/cards', cardRoutes); // Маршрутизирует все запросы про карточки
 
 app.use('/*', (req, res) => {// Маршрутизирует все неправильные запросы
   res.status(404).send({ message: 'Некорректный url' });
