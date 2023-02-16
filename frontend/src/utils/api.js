@@ -11,6 +11,10 @@ class Api {
     this._headers = options.headers; //Здесь можеть быть объект с несколькими заголовками
   }
 
+  setToken(token) {
+    this._headers.authorization = `Bearer ${token}`;
+  }
+
   //Обработать ответы в запросах.
   _parseAnswer(res) {
     if (res.ok) {
@@ -24,7 +28,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
-      headers: this._headers
+      headers: this._headers,
     }) //В ответ придет массив карточек
       .then(res => this._parseAnswer(res))
   }

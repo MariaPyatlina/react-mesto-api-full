@@ -76,6 +76,7 @@ function App() {
           return Promise.reject('Ошибка. нет токена');
         }
         localStorage.setItem('jwt', data.token);
+        api.setToken(data.token);
         setIsLoggedIn(true);
         setEmailState(email);
         history.push('/');
