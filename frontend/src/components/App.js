@@ -15,8 +15,6 @@ import * as apiAuth from '../utils/apiAuth'
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 import ProtectedRoute from './ProtectedRoute';
 
-
-
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -34,12 +32,10 @@ function App() {
   const history = useHistory();
 
   //Получение исходных данных
-
   React.useEffect(() => {
     if (isloggedIn) {
       Promise.all([api.getUserData(), api.getInitialCards()])
         .then(([userData, initialCards]) => {
-          console.log('userData при загрузке', userData);
           setCurrentUser(userData);
           setCards(initialCards.data);
         })
@@ -56,7 +52,6 @@ function App() {
 
 
   function handleRegister(password, email) {
-    console.log();
     apiAuth.register(password, email)
       .then((data) => {
         if (data) {
@@ -74,19 +69,22 @@ function App() {
   function handleLogin(password, email) {
     apiAuth.authorize(password, email)
       .then((data) => {
-        console.log('data 1', data);
         if (!data.token) {
-          return Promise.reject('Ошибка. нет токена');
+          return Promise.reject('Ошибка. Нет токена');
         }
         localStorage.setItem('jwt', data.token);
-        console.log('data.token', data.token);
         api.setToken(data.token);
         setIsLoggedIn(true);
         setEmailState(email);
         history.push('/');
-        // api.getUserData();
       })
-      // .then((data) => setCurrentUser(data))
+      .then(() => {
+        api.getUserData()
+          .then((data) => {
+            setCurrentUser(data);
+          })
+          .catch((err) => { console.log(`Ошибка ${err}`) });
+      })
       .catch((err) => {
         setSigninState(false);
         setIsInfoTooltipOpen(true);
@@ -101,7 +99,6 @@ function App() {
       apiAuth.checkToken(jwt)
         .then((res) => {
           if (res) {
-            console.log('res', res);
             api.setToken(jwt);
             setIsLoggedIn(true);
             setEmailState(res.email);
@@ -117,20 +114,16 @@ function App() {
   function handleExit() {
     localStorage.removeItem('jwt');
     history.push('/sign-in');
+    setCurrentUser({});
     setEmailState('');
   }
 
   //Лайки карточки
   function handleCardLike(card) {
-    console.log('card', card);
-    console.log('card.owner', card.owner);
     const isLiked = card.likes.some(user => user === currentUser._id); // Снова проверяем, есть ли уже лайк на этой карточке
 
     api.changeLikeCardStatus(card._id, !isLiked) // Отправляем запрос в API и получаем обновлённые данные карточки
       .then((newCard) => {
-        console.log('newCard', newCard);
-        console.log('newCard.data._id', newCard.data._id);
-        console.log('card._id', card._id);
         setCards((cards) => cards.map((currentCard) => currentCard._id === card._id ? newCard.data : currentCard));
       })
       .catch(err => {
@@ -169,10 +162,8 @@ function App() {
 
   //Обновление аватарки
   function handleUpdateAvatar(newUserAvatar) {
-    console.log('newUserAvatar handleUpd', newUserAvatar);
     api.updateAvatar(newUserAvatar)
       .then((data) => {
-        console.log('data_avatar', data);
         setCurrentUser(data.data);
         closeAllPopups()
       })
