@@ -9,9 +9,9 @@ function Card({
 }) {
     const currentUser = React.useContext(CurrentUserContext);
 
-    const isOwn = card.owner._id === currentUser._id; // Определяем, являемся ли мы владельцем текущей карточки
-    const isLiked = card.likes.some(user => user._id === currentUser._id);  // Определяем, лайкал ли пользователь карточку    
-
+    const isOwn = card.owner === currentUser._id; // Определяем, являемся ли мы владельцем текущей карточки
+    const isLiked = card.likes.some(user => user === currentUser._id);  // Определяем, лайкал ли пользователь карточку    
+    console.log('');
     function handleClick() {
         onCardClick(card);
     }

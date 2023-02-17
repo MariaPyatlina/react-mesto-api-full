@@ -19,6 +19,7 @@ function Main({
     loggedIn,
 }) {
     const currentUser = React.useContext(CurrentUserContext);
+    console.log('currentUser in main', currentUser);
 
     return (
         <>

@@ -16,6 +16,8 @@ function PopupEditAvatar({
     function handleSubmit(evt) {
         evt.preventDefault();
 
+        console.log('что лежит в аватарке', avatarLinkRef.current.value);
+
         onUpdateAvatar({
             newUserAvatar: avatarLinkRef.current.value,
         })
