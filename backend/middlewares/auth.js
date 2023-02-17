@@ -3,6 +3,8 @@ const UnauthorizedError = require('../error/unauthorizedError');
 const { SECRET_PHRASE } = require('../utils/constants');
 const { UNAUTHORIZED_ERROR_MSG } = require('../utils/constants');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 // eslint-disable-next-line consistent-return
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
@@ -18,7 +20,7 @@ const auth = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, SECRET_PHRASE);
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : SECRET_PHRASE);
   } catch (err) {
     // отправим ошибку, если не получилось
     return next(new UnauthorizedError(UNAUTHORIZED_ERROR_MSG));

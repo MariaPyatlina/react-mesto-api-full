@@ -5,6 +5,8 @@ const ConflictError = require('../error/conflictError');
 const NotFoundError = require('../error/notFoundError');
 const UnauthorizedError = require('../error/unauthorizedError');
 const User = require('../models/user');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 const {
   BAD_REQUEST_ERROR_MSG,
   USER_NOT_FOUND_ERROR_MSG,
@@ -19,7 +21,7 @@ function login(req, res, next) {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        SECRET_PHRASE, // пейлоуд токена и секретный ключ подписи
+        NODE_ENV === 'production' ? JWT_SECRET : SECRET_PHRASE, // пейлоуд токена и секретный ключ подписи
         { expiresIn: '7d' },
       );
 
