@@ -23,11 +23,11 @@ app.use(requestLogger); // Подключаем логгер запросов д
 app.use(cors(allowedCors));
 
 // Раскомментить перед ревью, удалить после
-// app.get('/crash-test', () => {
-//   setTimeout(() => {
-//     throw new Error('Сервер сейчас упадёт');
-//   }, 0);
-// });
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({ // Маршрутизирует авторизацию
   body: Joi.object().keys({
