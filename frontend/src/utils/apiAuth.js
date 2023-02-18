@@ -1,4 +1,4 @@
-const baseUrl = 'http://api.mesto.for.students.nomoredomains.work';
+const baseUrl = 'https://api.mesto.for.students.nomoredomains.work';
 
 
 const parseAnswer = (res) => {
