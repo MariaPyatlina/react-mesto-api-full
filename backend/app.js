@@ -47,9 +47,9 @@ app.post('/signup', celebrate({ // Маршрутизирует регистра
   }),
 }), createUser);
 
-app.use('/api/users', userRoutes); // Маршрутизирует все запросы про пользователя
+app.use('/users', userRoutes); // Маршрутизирует все запросы про пользователя
 
-app.use('/api/cards', cardRoutes); // Маршрутизирует все запросы про карточки
+app.use('/cards', cardRoutes); // Маршрутизирует все запросы про карточки
 
 app.use('/*', (req, res) => { // Маршрутизирует все неправильные запросы
   res.status(404).send({ message: 'Некорректный url' });
