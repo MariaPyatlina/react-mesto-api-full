@@ -1,5 +1,5 @@
 export const config = {
-  baseUrl: 'http://api.mesto.for.students.nomoredomains.work',
+  baseUrl: 'https://api.mesto.for.students.nomoredomains.work',
   headers: { 'Content-Type': 'application/json' },
 }
 
