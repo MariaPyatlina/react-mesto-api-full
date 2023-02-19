@@ -4,6 +4,7 @@ const BAD_REQUEST_ERROR = 400;
 const BAD_REQUEST_ERROR_MSG = 'Переданы некорректные данные. ';
 
 const NOT_FOUND_ERROR = 404;
+const PAGE_NOT_FOUND_ERROR_MSG = 'Некорректный URL';
 const USER_NOT_FOUND_ERROR_MSG = 'Пользователь c указанным ID не найден. ';
 const CARD_NOT_FOUND_ERROR_MSG = 'Карточка c указанным ID найдена. ';
 
@@ -20,6 +21,7 @@ module.exports = {
   NOT_FOUND_ERROR,
   SERVER_ERROR_MSG,
   BAD_REQUEST_ERROR_MSG,
+  PAGE_NOT_FOUND_ERROR_MSG,
   USER_NOT_FOUND_ERROR_MSG,
   CARD_NOT_FOUND_ERROR_MSG,
   UNAUTHORIZED,

@@ -3,14 +3,12 @@ const jwt = require('jsonwebtoken');
 const BadRequestError = require('../error/badRequestError');
 const ConflictError = require('../error/conflictError');
 const NotFoundError = require('../error/notFoundError');
-const UnauthorizedError = require('../error/unauthorizedError');
 const User = require('../models/user');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 const {
   BAD_REQUEST_ERROR_MSG,
   USER_NOT_FOUND_ERROR_MSG,
-  UNAUTHORIZED_ERROR_MSG,
   SECRET_PHRASE,
 } = require('../utils/constants');
 
@@ -27,9 +25,7 @@ function login(req, res, next) {
 
       res.status(200).send({ messsage: 'success', token });
     })
-    .catch(() => {
-      next(new UnauthorizedError(UNAUTHORIZED_ERROR_MSG));
-    });
+    .catch(next);
 }
 
 function createUser(req, res, next) {
@@ -51,18 +47,14 @@ function createUser(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(`${BAD_REQUEST_ERROR_MSG} Проверьте правильность запроса.`));
-      }
-
-      if (err.name === 'CastError') {
-        next(new BadRequestError(`${BAD_REQUEST_ERROR_MSG} Проверьте правильность запроса.`));
+        return next(new BadRequestError(`${BAD_REQUEST_ERROR_MSG} Проверьте правильность запроса.`));
       }
 
       if (err.code === 11000) {
-        next(new ConflictError('Неуникальный email'));
+        return next(new ConflictError('Неуникальный email'));
       }
 
-      next(err);
+      return next(err);
     });
 }
 
@@ -71,23 +63,23 @@ function getAllUsers(req, res, next) {
     .then((user) => {
       res.send({ data: user });
     })
-    .catch((err) => next(err));
+    .catch(next);
 }
 
 function getUser(req, res, next) {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
+        return next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
       }
 
       return res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
+        return next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
       }
-      next(err);
+      return next(err);
     });
 }
 
@@ -108,15 +100,15 @@ function updateUser(req, res, next) {
   )
     .then((user) => {
       if (!user) {
-        next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
+        return next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
       }
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
+        return next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
       }
-      next(err);
+      return next(err);
     });
 }
 
@@ -131,15 +123,15 @@ function updateUserAvatar(req, res, next) {
   )
     .then((user) => {
       if (!user) {
-        next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
+        return next(new NotFoundError(USER_NOT_FOUND_ERROR_MSG));
       }
       return res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
+        return next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
       }
-      next(err);
+      return next(err);
     });
 }
 

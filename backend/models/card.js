@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { LINK_REGEX } = require('../utils/regularExpression');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,8 +13,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        // eslint-disable-next-line no-useless-escape
-        return /https?:\/\/(www\.)?[a-z0-9-\.\_\-~:\/?#[\]@!$&'\(\)\*\+,;=]+#?/.test(v);
+        return LINK_REGEX.test(v);
       },
       message: (props) => `${props.value} неправильный формат ссылки`,
     },
@@ -29,6 +29,10 @@ const cardSchema = new mongoose.Schema({
       ref: 'user',
     }],
     default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 
 }, {

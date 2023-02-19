@@ -10,8 +10,11 @@ const { login, createUser } = require('./controllers/users');
 const { handlerError } = require('./middlewares/handlerError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { allowedCors } = require('./utils/allowedCors');
+const { LINK_REGEX } = require('./utils/regularExpression');
 
 const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/mestodb' } = process.env;
+const { PAGE_NOT_FOUND_ERROR_MSG } = require('./utils/constants');
+const NotFoundError = require('./error/notFoundError');
 
 const app = express();
 
@@ -42,8 +45,7 @@ app.post('/signup', celebrate({ // Маршрутизирует регистра
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    // eslint-disable-next-line no-useless-escape
-    avatar: Joi.string().regex(/https?:\/\/(www\.)?[a-z0-9-\.\_\-~:\/?#[\]@!$&'\(\)\*\+,;=]+#?/),
+    avatar: Joi.string().regex(LINK_REGEX),
   }),
 }), createUser);
 
@@ -51,8 +53,8 @@ app.use('/users', userRoutes); // Маршрутизирует все запро
 
 app.use('/cards', cardRoutes); // Маршрутизирует все запросы про карточки
 
-app.use('/*', (req, res) => { // Маршрутизирует все неправильные запросы
-  res.status(404).send({ message: 'Некорректный url' });
+app.use('/*', (req, res, next) => { // Маршрутизирует все неправильные запросы
+  next(new NotFoundError(PAGE_NOT_FOUND_ERROR_MSG));
 });
 
 // Обрабатывает все ошибки

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../error/unauthorizedError');
+const { LINK_REGEX } = require('../utils/regularExpression');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -24,8 +25,7 @@ const userSchema = new mongoose.Schema({
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(v) {
-        // eslint-disable-next-line no-useless-escape
-        return /https?:\/\/(www\.)?[a-z0-9-\.\_\-~:\/?#[\]@!$&'\(\)\*\+,;=]+#?/.test(v);
+        return LINK_REGEX.test(v);
       },
       message: (props) => `${props.value} неправильный формат ссылки`,
     },
@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
     select: false, // необходимо чтобы api не возвращал хеш пароля
   },
 }, {

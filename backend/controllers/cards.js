@@ -19,9 +19,9 @@ function createCard(req, res, next) {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError(`${BAD_REQUEST_ERROR_MSG} Проверьте правильность запроса.`));
+        return next(new BadRequestError(`${BAD_REQUEST_ERROR_MSG} Проверьте правильность запроса.`));
       }
-      next(err);
+      return next(err);
     });
 }
 
@@ -30,7 +30,7 @@ function getAllCards(req, res, next) {
     .then((card) => {
       res.send({ data: card });
     })
-    .catch((err) => next(err));
+    .catch(next);
 }
 
 function deleteCard(req, res, next) {
@@ -39,8 +39,7 @@ function deleteCard(req, res, next) {
       if (!card) {
         return next(new NotFoundError(CARD_NOT_FOUND_ERROR_MSG));
       }
-      // eslint-disable-next-line eqeqeq
-      if (card.owner != req.user._id) {
+      if (card.owner !== req.user._id) {
         return next(new ForbiddenError(`${FORBIDDEN_ERROR_MSG}. Нельзя удалить чужую карточку`));
       }
       return res.status(200).send({ data: card });
