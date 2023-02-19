@@ -17,13 +17,14 @@ const { PAGE_NOT_FOUND_ERROR_MSG } = require('./utils/constants');
 const NotFoundError = require('./error/notFoundError');
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
+
 mongoose.set('strictQuery', false);
 
 app.use(requestLogger); // Подключаем логгер запросов до всех роутов
 
-app.use(cors(allowedCors));
+
 
 // Раскомментить перед ревью, удалить после
 app.get('/crash-test', () => {
