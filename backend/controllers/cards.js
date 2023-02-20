@@ -14,10 +14,7 @@ function createCard(req, res, next) {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner })
-    .then((card) => {
-      card.populate('owner');
-      console.log('овнер после создания', card);
-    })
+    .populate('owner')
     .then((card) => {
       res.status(201).send(card);
     })
