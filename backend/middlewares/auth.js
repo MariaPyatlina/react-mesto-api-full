@@ -9,6 +9,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
   // проверим есть ли токен в заголовке
+
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return next(new UnauthorizedError(UNAUTHORIZED_ERROR_MSG));
   }
