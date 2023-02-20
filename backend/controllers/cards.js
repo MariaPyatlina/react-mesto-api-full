@@ -15,7 +15,10 @@ function createCard(req, res, next) {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      res.status(201).send(card);
+      card.populate('owner')
+        .then((cardWithOwner) => {
+          res.status(201).send(cardWithOwner);
+        });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
