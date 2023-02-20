@@ -14,6 +14,7 @@ function createCard(req, res, next) {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner })
+    .populate('owner')
     .then((card) => {
       res.status(201).send(card);
     })
@@ -27,6 +28,8 @@ function createCard(req, res, next) {
 
 function getAllCards(req, res, next) {
   Card.find(req.body)
+    .populate('owner')
+    .populate('likes')
     .then((card) => {
       res.send({ data: card });
     })
@@ -34,7 +37,7 @@ function getAllCards(req, res, next) {
 }
 
 function deleteCard(req, res, next) {
-  Card.findByIdAndDelete(req.params.cardId)
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
         return next(new NotFoundError(CARD_NOT_FOUND_ERROR_MSG));
@@ -42,8 +45,9 @@ function deleteCard(req, res, next) {
       if (card.owner !== req.user._id) {
         return next(new ForbiddenError(`${FORBIDDEN_ERROR_MSG}. Нельзя удалить чужую карточку`));
       }
-      return res.status(200).send({ data: card });
+      return card.remove();
     })
+    .then(() => res.status(200).send({ message: `Карточка ${req.params.cardId} удалена` }))
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError(BAD_REQUEST_ERROR_MSG));
@@ -58,6 +62,8 @@ function setLikeCard(req, res, next) {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
+    .populate('owner')
+    .populate('likes')
     .then((card) => {
       if (!card) {
         return next(new NotFoundError(CARD_NOT_FOUND_ERROR_MSG));
@@ -78,6 +84,8 @@ function removeLikeCard(req, res, next) {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
+    .populate('owner')
+    .populate('likes')
     .then((card) => {
       if (!card) {
         return next(new NotFoundError(CARD_NOT_FOUND_ERROR_MSG));
