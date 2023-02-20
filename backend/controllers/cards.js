@@ -15,11 +15,11 @@ function createCard(req, res, next) {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      console.log('отправляем что', card);
-      res.status(201).send(card);
+      card.populate('owner');
+      console.log('овнер после создания', card);
     })
     .then((card) => {
-      card.populate('owner');
+      res.status(201).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

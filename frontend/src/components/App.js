@@ -183,6 +183,7 @@ function App() {
       newLinkPlace
     })
       .then((newCard) => {
+        console.log('newCard ddd', newCard);
         setCards([newCard, ...cards]);
         closeAllPopups()
       })
