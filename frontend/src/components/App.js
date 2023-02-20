@@ -120,7 +120,6 @@ function App() {
 
   //Лайки карточки
   function handleCardLike(card) {
-    console.log('cardas like', cards);
     const isLiked = card.likes.some(user => user._id === currentUser._id); // Снова проверяем, есть ли уже лайк на этой карточке
 
     api.changeLikeCardStatus(card._id, !isLiked) // Отправляем запрос в API и получаем обновлённые данные карточки
@@ -183,7 +182,6 @@ function App() {
       newLinkPlace
     })
       .then((newCard) => {
-        console.log('newCard ddd', newCard);
         setCards([newCard, ...cards]);
         closeAllPopups()
       })
